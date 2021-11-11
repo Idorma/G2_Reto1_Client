@@ -161,5 +161,44 @@ public class SignInControllerIT extends ApplicationTest {
         verifyThat("#lblUsername", hasText(nombre));
     }
 
+    /**
+     * Metodo el cual comprueba que al meter un usuario y contraseña correcta,
+     * teniendo el servidor cerrado, salta una excepcion tipo ConnectException.
+     */
+    @Ignore
+    @Test
+    public void testG_ConnectException() {
+        //metemos un usuario y una contraseña correcta
+        String nombre = "pepe";
+        String password = "abcd*1234";
 
+        clickOn("#textUser");
+        write(nombre);
+        clickOn("#textPasswd");
+        write(password);
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat(".alert", NodeMatchers.isVisible());
+    }
+
+    /**
+     * Metodo el cual comprueba que al meter un usuario y/o contraseña
+     * incorrecta, y el servidor esta abierto, salta una excepcion tipo
+     * SignInException.
+     */
+
+    @Test
+    public void testH_SignInException() {
+        //metemos un usuario y una contraseña correcta
+        String nombre = "hola";
+        String password = "abcd*1234";
+
+        clickOn("#textUser");
+        write(nombre);
+        clickOn("#textPasswd");
+        write(password);
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat(".alert", NodeMatchers.isVisible());
+    }
 }
