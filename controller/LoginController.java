@@ -8,6 +8,7 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -26,7 +28,6 @@ import javafx.stage.Stage;
 public class LoginController implements Initializable {
 
     @FXML
-    private Label label;
     private BorderPane secPane;
 
     @FXML
@@ -34,10 +35,13 @@ public class LoginController implements Initializable {
         try {
             Parent anotherRoot = FXMLLoader.load(getClass().getResource("Registro.fxml"));
             Stage anotherStage = new Stage();
+            anotherStage.setResizable(false);
+            anotherStage.getIcons().add(new Image("/photos/descargas-removebg-preview.png"));
             anotherStage.setTitle("Registro");
             anotherStage.setScene(new Scene(anotherRoot, 600, 400));
             anotherStage.show();
-        } catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
