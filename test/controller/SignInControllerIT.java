@@ -142,5 +142,24 @@ public class SignInControllerIT extends ApplicationTest {
         verifyThat("#btnLogin", isDisabled());
     }
 
+    /**
+     * Método el cual comprueba si es posible iniciar sesión de forma correcta.
+     */
+    @Ignore
+    @Test
+    public void testF_CorrectlogIn() {
+        //metemos un usuario y una contraseña correcta
+        String nombre = "pepe";
+        String password = "abcd*1234";
+
+        clickOn("#textUser");
+        write(nombre);
+        clickOn("#textPasswd");
+        write(password);
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat("#lblUsername", hasText(nombre));
+    }
+
 
 }
