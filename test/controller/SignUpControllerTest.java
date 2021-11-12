@@ -282,7 +282,7 @@ public class SignUpControllerTest extends ApplicationTest {
      * Este test valida que la contraseÃ±a no contenga numeros
      */
     @Test
-        public void testL_ContrasenaNoContieneNumeros() {
+    public void testL_ContrasenaNoContieneNumeros() {
         clickOn("#linkSignIn");
         clickOn("#txtName");
         write("Gorka Etura");
@@ -297,5 +297,134 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#btnSignUp", isDisabled());
     }
 
+    /**
+     * Este test valida que la contraseÃ±a no cumpla los caracteres minimos
+     */
+    @Test
+    public void testM_ContrasenaNoCumpleLosCaracteresMinimos() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Abel SÃ¡enz de Abascal");
+        clickOn("#txtUser");
+        write("abel12");
+        clickOn("#txtEmail");
+        write("abel@gmail.com");
+        clickOn("#txtPasswd");
+        write("abel12");
+        clickOn("#txtPassw2");
+        write("abel12");
+        verifyThat("#btnSignUp", isDisabled());
+    }
+
+    /**
+     * Este test valida que las contraseÃ±as no coincidan
+     */
+    @Test
+    public void testN_ContrasenasNoCoinciden() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Marisol GÃ³mez");
+        clickOn("#txtUser");
+        write("marisol");
+        clickOn("#txtEmail");
+        write("marisol@gmail.com");
+        clickOn("#txtPasswd");
+        write("marisol");
+        clickOn("#txtPassw2");
+        write("abcd*1234");
+        verifyThat("#btnSignUp", isDisabled());
+    }
+
+    /**
+     * Este test valida que te lleve a la ventana de SignIn
+     */
+    @Test
+    public void testO_Back() {
+        clickOn("#linkSignIn");
+        clickOn("#btnAtras");
+    }
+
+    /**
+     * Etse test valida que no pueda haber espacios en blanco
+     */
+    @Test
+    public void testP_Space() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write(" ");
+        clickOn("#txtUser");
+        write(" ");
+        clickOn("#txtEmail");
+        write(" ");
+        clickOn("#txtPasswd");
+        write(" ");
+        clickOn("#txtPassw2");
+        write(" ");
+        verifyThat("#btnSignUp", isDisabled());
+    }
+
+    /**
+     * Este test valida que registre un usuario y te lo muestre en la ventana de
+     * Session
+     */
+    @Test
+    public void testQ_SignUp() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Amelia Ledesma");
+        clickOn("#txtUser");
+        write("amelia");
+        clickOn("#txtEmail");
+        write("amelia@gmail.com");
+        clickOn("#txtPasswd");
+        write("abcd*1234");
+        clickOn("#txtPassw2");
+        write("abcd*1234");
+        verifyThat("#btnSignUp", isEnabled());
+        clickOn("#btnSignUp");
+        verifyThat(".alert", NodeMatchers.isVisible());
+    }
+
+    /**
+     * Este test valida que la conexiÃ³n con la base de datso sea erronea
+     */
+    @Test
+    public void testR_ConnectException() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("EstefanÃ­a Calonge");
+        clickOn("#txtUser");
+        write("estefania");
+        clickOn("#txtEmail");
+        write("estefania@gmail.com");
+        clickOn("#txtPasswd");
+        write("abcd*1234");
+        clickOn("#txtPassw2");
+        write("abcd*1234");
+        verifyThat("#btnSignUp", isEnabled());
+        clickOn("#btnSignUp");
+        verifyThat(".alert", NodeMatchers.isVisible());
+    }
+
+    /**
+     * Este test valida que el usuario y/o el email hayan sido registrados
+     */
+    @Test
+    public void testS_SignUpException() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Alejandro GÃ³mez");
+        clickOn("#txtUser");
+        write("alejandro");
+        clickOn("#txtEmail");
+        write("agomez@gmail.com");
+        clickOn("#txtPasswd");
+        write("abcd*1234");
+        clickOn("#txtPassw2");
+        write("abcd*1234");
+        verifyThat("#btnSignUp", isEnabled());
+        clickOn("#btnSignUp");
+        verifyThat(".alert", NodeMatchers.isVisible());
+    }
 
 }
