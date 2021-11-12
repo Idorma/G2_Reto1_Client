@@ -51,7 +51,6 @@ public class SignUpControllerTest extends ApplicationTest {
      * SignUp
      */
     @Test
-    @Ignore
     public void testA_CamposVacios() {
         clickOn("#linkSignIn");
         clickOn("#txtName");
@@ -77,7 +76,6 @@ public class SignUpControllerTest extends ApplicationTest {
      * ventana SignUp
      */
     @Test
-    @Ignore
     public void testB_NombreYApellidoVacio() {
         clickOn("#linkSignIn");
         clickOn("#txtName");
@@ -99,7 +97,6 @@ public class SignUpControllerTest extends ApplicationTest {
      * ventana SignUp
      */
     @Test
-    @Ignore
     public void testC_UsuarioVacio() {
         clickOn("#linkSignIn");
         clickOn("#txtName");
@@ -121,11 +118,10 @@ public class SignUpControllerTest extends ApplicationTest {
      * ventana SignUp
      */
     @Test
-    @Ignore
     public void testD_CorreoVacio() {
         clickOn("#linkSignIn");
         clickOn("#txtName");
-        write("Marcelino Gómez");
+        write("Marcelino GÃ³mez");
         clickOn("#txtUser");
         write("marcelino");
         clickOn("#txtEmail");
@@ -143,11 +139,10 @@ public class SignUpControllerTest extends ApplicationTest {
      * ventana SignUp
      */
     @Test
-    @Ignore
-    public void testE_ContraseñaVacia() {
+    public void testE_ContrasenaVacia() {
         clickOn("#linkSignIn");
         clickOn("#txtName");
-        write("Cristina Martínez");
+        write("Cristina MartÃ­nez");
         clickOn("#txtUser");
         write("cris");
         clickOn("#txtEmail");
@@ -165,11 +160,10 @@ public class SignUpControllerTest extends ApplicationTest {
      * ventana SignUp
      */
     @Test
-    @Ignore
-    public void testF_RepetirContraseñaVacia() {
+    public void testF_RepetirContrasenaVacia() {
         clickOn("#linkSignIn");
         clickOn("#txtName");
-        write("Guillermo Galán");
+        write("Guillermo GalÃ¡n");
         clickOn("#txtUser");
         write("guillermo");
         clickOn("#txtEmail");
@@ -182,3 +176,126 @@ public class SignUpControllerTest extends ApplicationTest {
         verifyThat("#btnSignUp", isDisabled());
     }
 
+    /**
+     * Este test comprueba que no se puedan escribir mÃ¡s de 50 caracteres
+     */
+    @Test
+    public void testG_MasDelMaxNumDeCaractereres() {
+        String name = "MarÃ­aIgnacioMarÃ­aIgnacioMarÃ­aIgnacioMarÃ­aIgnacioMarÃ­aIgnacio";
+
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write(name);
+        txtName = lookup("#txtName").query();
+        verifyThat(txtName.getText(), hasText(name));
+        /*clickOn("#txtUser");
+        write("maria");
+        clickOn("#txtEmail");
+        write("maria@gmail.com");
+        clickOn("#txtPasswd");
+        write("abcd*1234");
+        clickOn("#txtPassw2");
+        write("abcd*1234");*/
+    }
+
+    /**
+     * Este test valida que el usuario haya sido registrado
+     */
+    @Test
+    public void testH_UsuarioYaRegistrado() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Alejandro GÃ³mez");
+        clickOn("#txtUser");
+        write("alejandro");
+        clickOn("#txtEmail");
+        write("agomez@gmail.com");
+        clickOn("#txtPasswd");
+        write("abcd*1234");
+        clickOn("#txtPassw2");
+        write("abcd*1234");
+        verifyThat("#btnSignUp", isEnabled());
+        clickOn("#btnSignUp");
+        verifyThat(".alert", NodeMatchers.isVisible());
+    }
+
+    /**
+     * Este test valida que el correo no cumpla los requerimientos
+     */
+    @Test
+    public void testI_CorreoNoCumpleLosRequerimientos() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Justo Quintero");
+        clickOn("#txtUser");
+        write("justo");
+        clickOn("#txtEmail");
+        write("justo.com");
+        clickOn("#txtPasswd");
+        write("abcd*1234");
+        clickOn("#txtPassw2");
+        write("abcd*1234");
+        verifyThat("#btnSignUp", isDisabled());
+    }
+
+    /**
+     * Este test valida que el correo haya sido registrado
+     */
+    @Test
+    public void testJ_CorreoYaRegistrado() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Alejandro GÃ³mez");
+        clickOn("#txtUser");
+        write("alejandro");
+        clickOn("#txtEmail");
+        write("gomezmonfort@hotmail.es");
+        clickOn("#txtPasswd");
+        write("abcd*1234");
+        clickOn("#txtPassw2");
+        write("abcd*1234");
+        verifyThat("#btnSignUp", isEnabled());
+        clickOn("#btnSignUp");
+        verifyThat(".alert", NodeMatchers.isVisible());
+    }
+
+    /**
+     * Este test valida que la contraseÃ±a no cumpla los requerimientos mÃ­nimos
+     */
+    @Test
+    public void testK_ContrasenaNoCumpleLosRequirimientosMÃ­nimos() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Maica VÃ©lez");
+        clickOn("#txtUser");
+        write("maica");
+        clickOn("#txtEmail");
+        write("maica@gmail.com");
+        clickOn("#txtPasswd");
+        write("maica");
+        clickOn("#txtPassw2");
+        write("maica");
+        verifyThat("#btnSignUp", isDisabled());
+    }
+
+    /**
+     * Este test valida que la contraseÃ±a no contenga numeros
+     */
+    @Test
+        public void testL_ContrasenaNoContieneNumeros() {
+        clickOn("#linkSignIn");
+        clickOn("#txtName");
+        write("Gorka Etura");
+        clickOn("#txtUser");
+        write("gorka");
+        clickOn("#txtEmail");
+        write("maica@gmail.com");
+        clickOn("#txtPasswd");
+        write("gorkaetu");
+        clickOn("#txtPassw2");
+        write("gorkaetu");
+        verifyThat("#btnSignUp", isDisabled());
+    }
+
+
+}
