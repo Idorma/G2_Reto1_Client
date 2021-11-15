@@ -53,7 +53,7 @@
             </MenuBar>
             <Separator layoutX="-2.0" layoutY="5.0" prefHeight="0.0" prefWidth="655.0" />
             <Separator layoutX="1.0" layoutY="38.0" prefHeight="4.0" prefWidth="651.0" />
-            <Label fx:id="lblNomUsu" layoutX="363.0" layoutY="55.0" prefHeight="45.0" prefWidth="206.0" styleClass="header" stylesheets="@fxml.css" textFill="#999191" />
+            <Label fx:id="lblNomUsu" layoutX="363.0" layoutY="55.0" prefHeight="45.0" prefWidth="206.0"   textFill="#999191" />
          </children>
       
       </Pane>

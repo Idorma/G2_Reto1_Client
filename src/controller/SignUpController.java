@@ -1,26 +1,33 @@
 package controller;
 
 import classes.User;
+import com.sun.javafx.scene.control.behavior.TextAreaBehavior;
 import exceptions.*;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.SkinBase;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static logic.UiLogicFactory.getUiImplem;
 
@@ -101,7 +108,9 @@ public class SignUpController {
         txtPasswd.textProperty().addListener(this::passwdTextNumValidation);
         txtPassw2.textProperty().addListener(this::repeatpasswd);
         reportedFields();
+        anotherStage.setOnCloseRequest(this::confirmClose);
         anotherStage.show();
+       
     }
 
     /**
@@ -168,7 +177,9 @@ public class SignUpController {
             user = getUiImplem().signUp(user);
             LOGGER.info("Registro de usuario exitoso");
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario registrado correctamente");
-            alert.show();
+            
+            alert.showAndWait();
+           
             LOGGER.info("Carga del FXML de Session");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/view/Session.fxml")
@@ -254,14 +265,16 @@ public class SignUpController {
      */
     private void passwdTextCaractValidation(ObservableValue ov, String oldV,
             String newV) {
-
+        LOGGER.info("Control de longitud de contraseña");
         if (!txtPasswd.getText().equals("")) {
 
             try {
                 String passwd = txtPasswd.getText();
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
+                LOGGER.info("Longitud de 8 o mas caracteres");
             } catch (PasswordLengthException e) {
+                LOGGER.info("Longitud menor a 8 caracteres");
                 lblCaract.setVisible(true);
             }
 
@@ -280,13 +293,16 @@ public class SignUpController {
      */
     private void passwdTextNumValidation(ObservableValue ov, String oldV,
             String newV) {
-
+        LOGGER.info("Control de numero de contraseña");
         if (!txtPasswd.getText().equals("")) {
             try {
+               
                 String passwd = txtPasswd.getText();
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
+                 LOGGER.info("Contiene numeros");
             } catch (PasswordNumException e) {
+                LOGGER.info("No contiene numeros");
                 lblNum.setVisible(true);
             }
         }else{
@@ -408,5 +424,17 @@ public class SignUpController {
         if (!txtPasswd.getText().equals(txtPassw2.getText())) {
             throw new SamePasswordException(lblPasswd2.getText());
         }
+    }
+    
+    
+    private void confirmClose(Event event){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"¿Estas seguro de que quieres salir del programa?");
+        Button btnClose = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        btnClose.setText("Salir");
+        Optional<ButtonType> close = alert.showAndWait();
+        if(!ButtonType.OK.equals(close.get())){
+            event.consume();
+        }
+        
     }
 }

@@ -3,11 +3,14 @@ package controller;
 import classes.User;
 import exceptions.*;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.*;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -22,7 +26,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import static logic.UiLogicFactory.getUiImplem;
 
 /**
@@ -54,10 +60,9 @@ public class SignInController {
 
     @FXML
     private Label lblNum;
-    
+
     @FXML
     private Pane paneVentana;
-    
 
     private final int max = 50;
 
@@ -90,6 +95,7 @@ public class SignInController {
         textPasswd.setOnKeyTyped(this::eventKey);
         textUser.setOnKeyTyped(this::eventKey);
         textPasswd.setOnKeyTyped(this::eventKey);
+        stage.setOnCloseRequest(this::confirmClose);
         stage.show();
 
     }
@@ -136,6 +142,9 @@ public class SignInController {
             user.setPassword(textPasswd.getText());
             LOGGER.info("Ejecucion del metodo signIn de la implementacion");
             user = getUiImplem().signIn(user);
+            LOGGER.info("Registro de usuario exitoso");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario registrado correctamente");
+            
 
             LOGGER.info("Carga del FXML de Session");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -284,4 +293,15 @@ public class SignInController {
             throw new PasswordNumException(lblNum.getText());
         }
     }
+    public void confirmClose(Event event){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"¿Estas seguro de que quieres salir del programa?");
+        Button btnClose = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        btnClose.setText("Salir");
+        Optional<ButtonType> close = alert.showAndWait();
+        if(!ButtonType.OK.equals(close.get())){
+            event.consume();
+        }
+        
+    }
+    
 }

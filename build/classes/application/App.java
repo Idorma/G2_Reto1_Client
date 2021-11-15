@@ -9,7 +9,7 @@ import javafx.scene.Parent;
 
 /**
  * Es la clase principal.
- * @author Idoia Ormaetxea y Alain Cosgaya
+ * @author Idoia Ormaetxea y Alejandro Gomez
  */
 public class App extends Application{
     private static final Logger LOGGER = Logger.getLogger(App.class.getName());
