@@ -134,7 +134,7 @@ public class SignInController {
      */
     @FXML
     private void buttonEventSignIn(ActionEvent event) {
-
+        LOGGER.info("Pulsacion de boton de inicio de sesion");
         try {
             LOGGER.info("Inicializacion de la variable user");
             User user = new User();
@@ -148,7 +148,7 @@ public class SignInController {
 
             LOGGER.info("Carga del FXML de Session");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/view/Session.fxml")
+ "/view/Session.fxml")
             );
 
             Parent root = (Parent) loader.load();
@@ -160,11 +160,11 @@ public class SignInController {
             paneVentana.getScene().getWindow().hide();
 
         } catch (IOException e1) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, e1);
+            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e1.getMessage(), e1);
         } catch (ConnectException | SignInException | UpdateException | ServerFullException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
             alert.show();
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -176,10 +176,11 @@ public class SignInController {
      */
     @FXML
     private void buttonEvent(ActionEvent event) {
+        LOGGER.info("Botn");
         try {
             LOGGER.info("Carga del FXML de SignUp");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/view/SignUp.fxml")
+                    "/view/Registro.fxml")
             );
 
             Parent root = (Parent) loader.load();
@@ -191,7 +192,7 @@ public class SignInController {
             paneVentana.getScene().getWindow().hide();
 
         } catch (IOException e) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -210,6 +211,7 @@ public class SignInController {
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
             } catch (PasswordLengthException e) {
+                  Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblCaract.setVisible(true);
             }
         } else {
@@ -233,6 +235,7 @@ public class SignInController {
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
             } catch (PasswordNumException e) {
+                 Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblNum.setVisible(true);
             }
         } else {

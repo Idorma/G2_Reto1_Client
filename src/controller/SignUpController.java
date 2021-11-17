@@ -90,7 +90,8 @@ public class SignUpController {
     }
 
     /**
-     * El metodo que instancia la ventana.
+     * El metodo que instancia la ventana. Se añaden tanto el icono como el
+     * titulo y los listener de los metodos.
      *
      * @param root
      */
@@ -110,12 +111,12 @@ public class SignUpController {
         reportedFields();
         anotherStage.setOnCloseRequest(this::confirmClose);
         anotherStage.show();
-       
+
     }
 
     /**
      * El metodo que controla que no se introduzcan espacios en los campos de
-     * texto.
+     * texto y que no llegue al limite de caracteres.
      *
      * @param event
      */
@@ -159,9 +160,12 @@ public class SignUpController {
 
     /**
      * El metodo que indica las acciones del botón y crea la ventana a la que se
-     * dirige, llevandole los datos.
+     * dirige, llevandole los datos. Se hace uso de la implementacion mandando
+     * la peticion de registro, esperando respuesta de esta. En el caso de que
+     * no haya ningun tipo de error, se cargara el FXML de Session, y se
+     * mostrara llevandole los datos del usuario que ha sido registrado.
      *
-     * @param event
+     * @param event El evento de pulsacion de SignUp
      */
     @FXML
     private void buttonEvent(ActionEvent event) {
@@ -177,9 +181,9 @@ public class SignUpController {
             user = getUiImplem().signUp(user);
             LOGGER.info("Registro de usuario exitoso");
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario registrado correctamente");
-            
+
             alert.showAndWait();
-           
+
             LOGGER.info("Carga del FXML de Session");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/view/Session.fxml")
@@ -195,18 +199,18 @@ public class SignUpController {
             paneSignUp.getScene().getWindow().hide();
 
         } catch (IOException e) {
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         } catch (ConnectException | SignUpException | UpdateException | ServerFullException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
             alert.show();
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
 
     }
 
     /**
      * El metodo que indica las acciones del botón y crea la ventana a la que se
-     * dirige.
+     * dirige. Se cargara el FXML de SignIn y se mostrara la ventana de SignIn.
      *
      * @param event
      */
@@ -223,18 +227,20 @@ public class SignUpController {
             LOGGER.info("Llamada al controlador del FXML");
             SignInController controller = ((SignInController) loader.getController());
             controller.setStage(stage);
+            LOGGER.info("Inicio del stage de SignIn");
             controller.initStage(root);
 
             paneSignUp.getScene().getWindow().hide();
 
         } catch (IOException e) {
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
 
     /**
-     * El metodo que valida si el formato de correo es correcto.
+     * El metodo que valida si el formato de correo es correcto. La comprobacion
+     * se hace a traves de la llamada al metodo validarPattern.
      *
      * @param ov valor observable
      * @param oldV valor antiguo
@@ -249,6 +255,7 @@ public class SignUpController {
                 validarEmailPattern(email);
                 lblEmail.setVisible(false);
             } catch (EmailPatternException e) {
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblEmail.setVisible(true);
             }
         } else {
@@ -257,7 +264,9 @@ public class SignUpController {
     }
 
     /**
-     * El metodo que valida si se han introducido menos de 8 caracteres.
+     * El metodo que valida si se han introducido menos de 8 caracteres. La
+     * comprobacion se hace a traves de la llamada al metodo
+     * validarMinCaractPasswdPattern.
      *
      * @param ov valor observable
      * @param oldV valor antiguo
@@ -265,27 +274,29 @@ public class SignUpController {
      */
     private void passwdTextCaractValidation(ObservableValue ov, String oldV,
             String newV) {
-        LOGGER.info("Control de longitud de contraseña");
+
         if (!txtPasswd.getText().equals("")) {
 
             try {
                 String passwd = txtPasswd.getText();
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
-                LOGGER.info("Longitud de 8 o mas caracteres");
+
             } catch (PasswordLengthException e) {
-                LOGGER.info("Longitud menor a 8 caracteres");
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblCaract.setVisible(true);
             }
 
-        }else{
+        } else {
             lblCaract.setVisible(false);
         }
 
     }
 
     /**
-     * El metodo que valida si se han introducido números.
+     * El metodo que valida si se han introducido números. La
+     * comprobacion se hace a traves de la llamada al metodo
+     * validarNumPasswdPattern.
      *
      * @param ov valor observable
      * @param oldV valor antiguo
@@ -293,25 +304,25 @@ public class SignUpController {
      */
     private void passwdTextNumValidation(ObservableValue ov, String oldV,
             String newV) {
-        LOGGER.info("Control de numero de contraseña");
+
         if (!txtPasswd.getText().equals("")) {
             try {
-               
+
                 String passwd = txtPasswd.getText();
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
-                 LOGGER.info("Contiene numeros");
+
             } catch (PasswordNumException e) {
-                LOGGER.info("No contiene numeros");
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblNum.setVisible(true);
             }
-        }else{
+        } else {
             lblNum.setVisible(false);
         }
     }
 
     /**
-     * El metodo que valida si las contraseñas coinciden entre ellas.
+     * El metodo que valida si las contraseñas coinciden entre ellas. La validacion se hace a traves de la llamada al metodo validarEqualPasswd.
      *
      * @param ov valor observable
      * @param oldV valor antiguo
@@ -325,15 +336,16 @@ public class SignUpController {
                 validarEqualPasswd();
                 lblPasswd2.setVisible(false);
             } catch (SamePasswordException e) {
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblPasswd2.setVisible(true);
             }
-        }else{
+        } else {
             lblPasswd2.setVisible(false);
         }
     }
 
     /**
-     * El metodo que controla si los campos están informados.
+     * El metodo que controla si los campos están informados. Vinculando las propiedades de todos los campos.
      */
     private void reportedFields() {
         btnSignUp.disableProperty().bind(
@@ -358,7 +370,8 @@ public class SignUpController {
     }
 
     /**
-     * El metodo que valida que el patron del correo es correcto.
+     * El metodo que valida que el patron del correo es correcto. La
+     * comprobacion se hace a traves de una comparacion con un patron.
      *
      * @param email recoge el valor del correo.
      * @throws EmailPatternException
@@ -377,7 +390,8 @@ public class SignUpController {
     }
 
     /**
-     * El metodo que controla los caracteres mínimos de la contraseña.
+     * El metodo que controla los caracteres mínimos de la contraseña. La
+     * comprobacion se hace a traves de una comparacion con un patron.
      *
      * @param passwd recoge el valor de la contraseña.
      * @throws PasswordLengthException
@@ -397,7 +411,8 @@ public class SignUpController {
     }
 
     /**
-     * El metodo que controla si la contraseña contiene números.
+     * El metodo que controla si la contraseña contiene números. La
+     * comprobacion se hace a traves de una comparacion con un patron.
      *
      * @param passwd recoge el valor de la contraseña.
      * @throws PasswordNumException
@@ -416,7 +431,7 @@ public class SignUpController {
     }
 
     /**
-     * El metodo que compara que las dos contraseñas son iguales.
+     * El metodo que compara que las dos contraseñas son iguales. La comprobacion se hace comparando los dos campos de contraseña.
      *
      * @throws SamePasswordException
      */
@@ -425,16 +440,22 @@ public class SignUpController {
             throw new SamePasswordException(lblPasswd2.getText());
         }
     }
-    
-    
-    private void confirmClose(Event event){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"¿Estas seguro de que quieres salir del programa?");
+
+    /**
+     * Alert de confirmacion de cerrado de programa. Tendras la opcion de elegir
+     * si deseas cerrarlo o no.
+     *
+     * @param event Pulsacion del evento de cerrado.
+     */
+    private void confirmClose(Event event) {
+        LOGGER.info("Creacion de alert de confirmacion");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "¿Estas seguro de que quieres salir del programa?");
         Button btnClose = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         btnClose.setText("Salir");
         Optional<ButtonType> close = alert.showAndWait();
-        if(!ButtonType.OK.equals(close.get())){
+        if (!ButtonType.OK.equals(close.get())) {
             event.consume();
         }
-        
+
     }
 }

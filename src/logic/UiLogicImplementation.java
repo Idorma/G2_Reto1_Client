@@ -77,7 +77,7 @@ public class UiLogicImplementation implements Signable {
             }
 
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new ConnectException("Error al intentar conectarse al servidor, intentelo mas tarde");
         }
 
@@ -128,7 +128,7 @@ public class UiLogicImplementation implements Signable {
             }
 
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new ConnectException("Error al intentar conectarse al servidor, intentelo mas tarde");
         }
         return userInfo.getUser();

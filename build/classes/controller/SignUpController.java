@@ -195,11 +195,11 @@ public class SignUpController {
             paneSignUp.getScene().getWindow().hide();
 
         } catch (IOException e) {
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         } catch (ConnectException | SignUpException | UpdateException | ServerFullException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage());
             alert.show();
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, ex.getMessage(),ex);
         }
 
     }
@@ -228,7 +228,7 @@ public class SignUpController {
             paneSignUp.getScene().getWindow().hide();
 
         } catch (IOException e) {
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
@@ -249,6 +249,7 @@ public class SignUpController {
                 validarEmailPattern(email);
                 lblEmail.setVisible(false);
             } catch (EmailPatternException e) {
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblEmail.setVisible(true);
             }
         } else {
@@ -265,16 +266,16 @@ public class SignUpController {
      */
     private void passwdTextCaractValidation(ObservableValue ov, String oldV,
             String newV) {
-        LOGGER.info("Control de longitud de contraseña");
+        
         if (!txtPasswd.getText().equals("")) {
 
             try {
                 String passwd = txtPasswd.getText();
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
-                LOGGER.info("Longitud de 8 o mas caracteres");
+                
             } catch (PasswordLengthException e) {
-                LOGGER.info("Longitud menor a 8 caracteres");
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblCaract.setVisible(true);
             }
 
@@ -293,16 +294,16 @@ public class SignUpController {
      */
     private void passwdTextNumValidation(ObservableValue ov, String oldV,
             String newV) {
-        LOGGER.info("Control de numero de contraseña");
+        
         if (!txtPasswd.getText().equals("")) {
             try {
                
                 String passwd = txtPasswd.getText();
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
-                 LOGGER.info("Contiene numeros");
+                
             } catch (PasswordNumException e) {
-                LOGGER.info("No contiene numeros");
+                  Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblNum.setVisible(true);
             }
         }else{
@@ -325,6 +326,7 @@ public class SignUpController {
                 validarEqualPasswd();
                 lblPasswd2.setVisible(false);
             } catch (SamePasswordException e) {
+                 Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblPasswd2.setVisible(true);
             }
         }else{
