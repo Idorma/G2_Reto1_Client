@@ -55,7 +55,9 @@ public class SessionController {
     }
 
     /**
-     * El metodo que rellena los datos de los campos de texto.
+     * El metodo que rellena los datos de los campos de texto. En el caso de que
+     * los caracteres del parametro Fullname sean mayores a 12, se disminuira el
+     * tamaño de la letra.
      *
      * @param user Los datos del usuario
      */
@@ -64,7 +66,6 @@ public class SessionController {
         txtName = user.getFullName();
         LOGGER.info("Comprobacion de si hay espacios en el atributo FullName");
         lblNomUsu.setFont(new Font(30));
-
         lblNomUsu.setText(txtName);
         if (lblNomUsu.getText().length() > 12) {
             LOGGER.info("Longitud mayor a 12, se reajustara la fuente del label");
@@ -76,7 +77,8 @@ public class SessionController {
     }
 
     /**
-     * El metodo que instancia la ventana.
+     * El metodo que instancia la ventana. Se añaden tanto el icono como el
+     * titulo y los listener de los metodos.
      *
      * @param root
      */
@@ -93,8 +95,8 @@ public class SessionController {
     }
 
     /**
-     * El metodo que indica la acción al botón y crea la ventana a la que se
-     * dirige.
+     * El metodo que indica las acciones del botón y crea la ventana a la que se
+     * dirige. Se cargara el FXML de SignIn y se mostrara la ventana de SignIn.
      *
      * @param event
      * @throws IOException
@@ -108,22 +110,26 @@ public class SessionController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/view/SignIn.fxml")
             );
+            // Se carga el FXML de SignIn
             Parent root = (Parent) loader.load();
             LOGGER.info("Llamada al controlador del FXML");
+            // Se recoge el controlador del FXML
             SignInController controller = ((SignInController) loader.getController());
             controller.setStage(stage);
+            LOGGER.info("Inicio del stage de SignIn");
             controller.initStage(root);
 
             bPane.getScene().getWindow().hide();
 
         } catch (IOException e) {
-            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
 
     /**
-     * El metodo que indica la acción al botón y sale de la aplicación.
+     * El metodo que indica la acción al botón y sale de la aplicación. Se hará
+     * a traves de una llamada al metodo confirmClose.
      *
      * @param event
      */
@@ -133,11 +139,18 @@ public class SessionController {
         confirmClose(event);
 
     }
-
+    /**
+     * Alert de confirmacion de cerrado de programa. Tendras la opcion de elegir
+     * si deseas cerrarlo o no.
+     *
+     * @param event Pulsacion del evento de cerrado.
+     */
     private void confirmClose(Event event) {
+        LOGGER.info("Creacion de alert de confirmacion");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "¿Estas seguro de que quieres salir del programa?");
         Button btnClose = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         btnClose.setText("Salir");
+        // Muestra el alert a la espera de la pulsacion de un boton del alert.
         Optional<ButtonType> close = alert.showAndWait();
         LOGGER.info("Comprobacion de pulsacion de salir");
         if (!ButtonType.OK.equals(close.get())) {

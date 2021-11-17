@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 /**
- * Es la clase principal.
+ * Es la clase principal del programa.
  *
  * @author Idoia Ormaetxea y Alejandro Gomez
  */

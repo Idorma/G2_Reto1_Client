@@ -66,7 +66,6 @@ public class SessionController {
         txtName = user.getFullName();
         LOGGER.info("Comprobacion de si hay espacios en el atributo FullName");
         lblNomUsu.setFont(new Font(30));
-
         lblNomUsu.setText(txtName);
         if (lblNomUsu.getText().length() > 12) {
             LOGGER.info("Longitud mayor a 12, se reajustara la fuente del label");
@@ -111,8 +110,10 @@ public class SessionController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/view/SignIn.fxml")
             );
+            // Se carga el FXML de SignIn
             Parent root = (Parent) loader.load();
             LOGGER.info("Llamada al controlador del FXML");
+            // Se recoge el controlador del FXML
             SignInController controller = ((SignInController) loader.getController());
             controller.setStage(stage);
             LOGGER.info("Inicio del stage de SignIn");
@@ -149,6 +150,7 @@ public class SessionController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "¿Estas seguro de que quieres salir del programa?");
         Button btnClose = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         btnClose.setText("Salir");
+        // Muestra el alert a la espera de la pulsacion de un boton del alert.
         Optional<ButtonType> close = alert.showAndWait();
         LOGGER.info("Comprobacion de pulsacion de salir");
         if (!ButtonType.OK.equals(close.get())) {

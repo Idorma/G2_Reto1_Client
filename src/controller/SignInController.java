@@ -88,8 +88,10 @@ public class SignInController {
         stage.setTitle("SignIn");
         stage.setScene(scene);
         LOGGER.info("Llamada a los metodos y restricciones del controlador");
+        // Listener de los campos
         textPasswd.textProperty().addListener(this::passwdTextCaractValidation);
         textPasswd.textProperty().addListener(this::passwdTextNumValidation);
+        // Metodo de vinculacion de campos
         reportedFields();
         btnLogin.setOnAction(this::buttonEventSignIn);
         linkSignIn.setOnAction(this::buttonEvent);
@@ -110,16 +112,21 @@ public class SignInController {
     @FXML
     private void eventKey(KeyEvent event) {
         Object evt = event.getSource();
+        // Comprobacion y borrado de espacios en blanco para cada campo
         if (evt.equals(textUser) || evt.equals(textPasswd)) {
             if (event.getCharacter().equals(" ")) {
                 event.consume();
             }
         }
+        // Comprobacion y borrado de caracteres que superen a longitud maxima
+        // en el campo textUser
         if (evt.equals(textUser)) {
             if (textUser.getText().length() >= max) {
                 event.consume();
             }
         }
+        // Comprobacion y borrado de caracteres que superen a longitud maxima
+        // en el campo textPasswd
         if (evt.equals(textPasswd)) {
             if (textPasswd.getText().length() >= max) {
                 event.consume();
@@ -149,14 +156,12 @@ public class SignInController {
             user = getUiImplem().signIn(user);
             LOGGER.info("Registro de usuario exitoso");
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario registrado correctamente");
-
             LOGGER.info("Carga del FXML de Session");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/view/Session.fxml")
-            );
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Session.fxml"));
+            // Se carga el FXML de Session
             Parent root = (Parent) loader.load();
             LOGGER.info("Llamada al controlador del FXML");
+            // Se recoge el controlador del FXML
             SessionController controller = ((SessionController) loader.getController());
             controller.setStage(stage);
             LOGGER.info("Inicio del stage de Session");
@@ -188,9 +193,10 @@ public class SignInController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/view/Registro.fxml")
             );
-
+            // Se carga el FXML de SignUp
             Parent root = (Parent) loader.load();
             LOGGER.info("Llamada al controlador del FXML");
+            // Se recoge el controlador del FXML
             SignUpController controller = ((SignUpController) loader.getController());
             controller.setStage(stage);
             LOGGER.info("Inicio del stage de SignUp");
@@ -214,8 +220,10 @@ public class SignInController {
      */
     private void passwdTextCaractValidation(ObservableValue ov, String oldV,
             String newV) {
+        // Se comprueba si el textField tiene algun tipo de texto para poder hacer una validacion.
         if (!textPasswd.getText().equals("")) {
             try {
+                // Guarda el texto del textField en un string para llevarlo al metodo de validacion. 
                 String passwd = textPasswd.getText();
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
@@ -239,8 +247,10 @@ public class SignInController {
      */
     private void passwdTextNumValidation(ObservableValue ov, String oldV,
             String newV) {
+        // Se comprueba si el textField tiene algun tipo de texto para poder hacer una validacion.
         if (!textPasswd.getText().equals("")) {
             try {
+                // Guarda el texto del textField en un string para llevarlo al metodo de validacion. 
                 String passwd = textPasswd.getText();
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
@@ -278,6 +288,7 @@ public class SignInController {
      */
     public void validarMinCaractPasswdPattern(String passwd)
             throws PasswordLengthException {
+        // Patron para la comprobacion.
         String regex = "^(.+){8,50}$";
 
         Pattern pattern = Pattern.compile(regex);
@@ -299,7 +310,7 @@ public class SignInController {
      */
     public void validarNumPasswdPattern(String passwd)
             throws PasswordNumException {
-
+        // Patron para la comprobacion.
         String regex = ".*\\d.*";
 
         Pattern pattern = Pattern.compile(regex);
@@ -321,6 +332,7 @@ public class SignInController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "¿Estas seguro de que quieres salir del programa?");
         Button btnClose = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         btnClose.setText("Salir");
+        // Muestra el alert a la espera de la pulsacion de un boton del alert.
         Optional<ButtonType> close = alert.showAndWait();
         if (!ButtonType.OK.equals(close.get())) {
             event.consume();

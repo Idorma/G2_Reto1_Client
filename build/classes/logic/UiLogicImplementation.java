@@ -57,14 +57,19 @@ public class UiLogicImplementation implements Signable {
 
         try {
             LOGGER.info("Prepara socket para su conexion con el servidor");
+            // Inicializa un socket con la IP y el puerto asignado
             socket = new Socket(configFile.getString("serverHost"), Integer.valueOf(configFile.getString("port")));
             LOGGER.info("Cliente iniciado");
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             LOGGER.info("Manda la clase de encapsulacion con la peticion y el usuario");
+            // Envia el objeto de tipo UserInfo al lado servidor
             out.writeObject(userInfo);
             LOGGER.info("Recibe la respuesta del servidor");
+            // Recibe la respuesta del servidor
             userInfo = (UserInfo) in.readObject();
+            // Comprobacion del tipo de mensaje recibido para lanzar
+            // una excepcion
             switch (userInfo.getMessage()) {
                 case SIGNIN_EXCEPTION:
                     throw new SignInException("Los parametros introducidos no corresponden a ningún cliente");
@@ -77,7 +82,7 @@ public class UiLogicImplementation implements Signable {
             }
 
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new ConnectException("Error al intentar conectarse al servidor, intentelo mas tarde");
         }
 
@@ -106,16 +111,19 @@ public class UiLogicImplementation implements Signable {
         UserInfo userInfo = new UserInfo(message, MessageType.SIGNUP_REQUEST);
         try {
             LOGGER.info("Prepara socket para su conexion con el servidor");
+            // Inicializa un socket con la IP y el puerto asignado
             socket = new Socket(configFile.getString("serverHost"), Integer.valueOf(configFile.getString("port")));
             LOGGER.info("Cliente iniciado");
-
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-
             LOGGER.info("Manda la clase de encapsulacion con la peticion y el usuario");
+            // Envia el objeto de tipo UserInfo al lado servidor
             out.writeObject(userInfo);
             LOGGER.info("Recibe la respuesta del servidor");
+            // Recibe la respuesta del servidor
             userInfo = (UserInfo) in.readObject();
+            // Comprobacion del tipo de mensaje recibido para lanzar
+            // una excepcion
             switch (userInfo.getMessage()) {
                 case SIGNUP_EXCEPTION:
                     throw new SignUpException("El email y/o el nombre de usuario introducidos ya corresponden a un cliente");
@@ -128,7 +136,7 @@ public class UiLogicImplementation implements Signable {
             }
 
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UiLogicImplementation.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new ConnectException("Error al intentar conectarse al servidor, intentelo mas tarde");
         }
         return userInfo.getUser();
