@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Reto1v3.jar" size="155674" download="eager" />
+    <jar href="Reto1v3.jar" size="158056" download="eager" />
     <jar href="lib\2DAMG2_Reto_1_Library.jar" size="29565" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Reto1v3" >

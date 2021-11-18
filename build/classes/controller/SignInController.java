@@ -69,7 +69,7 @@ public class SignInController {
     /**
      * El metodo que indica el stage.
      *
-     * @param stage1
+     * @param stage1 Stage recuperado de la ventana anterior.
      */
     public void setStage(Stage stage1) {
         stage = stage1;
@@ -79,10 +79,11 @@ public class SignInController {
      * El metodo que instancia la ventana. Se añaden tanto el icono como el
      * titulo y los listener de los metodos.
      *
-     * @param root
+     * @param root Nodo para la creacion de la escena de la ventana
      */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
+        
         stage.setResizable(false);
         stage.getIcons().add(new Image("/photos/descargas-removebg-preview.png"));
         stage.setTitle("SignIn");
@@ -107,7 +108,7 @@ public class SignInController {
      * El metodo que controla que no se introduzcan espacios en los campos de
      * texto y que no llegue al limite de caracteres.
      *
-     * @param event
+     * @param event Evento de pulsacion de tecla
      */
     @FXML
     private void eventKey(KeyEvent event) {
@@ -183,7 +184,7 @@ public class SignInController {
      * dirige. Se hace una pulsacion de un hyperLink, cargando el FXML de
      * SignUp, y mostrandolo.
      *
-     * @param event
+     * @param event Evento de pulsacion del hyperLink de SignUp.
      */
     @FXML
     private void buttonEvent(ActionEvent event) {

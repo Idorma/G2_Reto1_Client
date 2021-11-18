@@ -1,4 +1,4 @@
 /**
  * Este paquete contiene la aplicación principal del lado cliente.
  */
-package Application;
+package application;

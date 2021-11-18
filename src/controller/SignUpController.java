@@ -83,7 +83,7 @@ public class SignUpController {
     /**
      * El metodo que indica el stage.
      *
-     * @param stage1
+     * @param stage1 Stage recuperado de la ventana anterior.
      */
     public void setStage(Stage stage1) {
         stage = stage1;
@@ -93,7 +93,7 @@ public class SignUpController {
      * El metodo que instancia la ventana. Se añaden tanto el icono como el
      * titulo y los listener de los metodos.
      *
-     * @param root
+     * @param root Nodo para la creacion de la escena de la ventana
      */
     public void initStage(Parent root) {
         Stage anotherStage = new Stage();
@@ -104,13 +104,14 @@ public class SignUpController {
         anotherStage.setTitle("SignUp");
         anotherStage.setScene(new Scene(root));
         LOGGER.info("Llamada a metodos y restricciones del controlador");
-        // Listener de los campos
+        // Listener de los campos.
         txtEmail.textProperty().addListener(this::emailTextValidation);
         txtPasswd.textProperty().addListener(this::passwdTextCaractValidation);
         txtPasswd.textProperty().addListener(this::passwdTextNumValidation);
         txtPassw2.textProperty().addListener(this::repeatpasswd);
-        // Metodo de vinculacion de campos
+        // Metodo de vinculacion de campos.
         reportedFields();
+        // Metodo para alert de confirmacion de cerrado de ventana.
         anotherStage.setOnCloseRequest(this::confirmClose);
         anotherStage.show();
 
@@ -120,12 +121,12 @@ public class SignUpController {
      * El metodo que controla que no se introduzcan espacios en los campos de
      * texto y que no llegue al limite de caracteres.
      *
-     * @param event
+     * @param event evento de pulsacion de tecla
      */
     @FXML
     private void eventKey(KeyEvent event) {
         Object evt = event.getSource();
-        // Comprobacion y borrado de espacios en blanco para cada campo
+        // Comprobacion y borrado de espacios en blanco para cada campo.
         if (evt.equals(txtUser) || evt.equals(txtPasswd) || evt.equals(txtPassw2)
                 || evt.equals(txtEmail)) {
             if (event.getCharacter().equals(" ")) {
@@ -133,35 +134,35 @@ public class SignUpController {
             }
         }
         // Comprobacion y borrado de caracteres que superen a longitud maxima
-        // en el campo txtName
+        // en el campo txtName.
         if (evt.equals(txtName)) {
             if (txtName.getText().length() >= max) {
                 event.consume();
             }
         }
         // Comprobacion y borrado de caracteres que superen a longitud maxima
-        // en el campo txtUser
+        // en el campo txtUser.
         if (evt.equals(txtUser)) {
             if (txtUser.getText().length() >= max) {
                 event.consume();
             }
         }
         // Comprobacion y borrado de caracteres que superen a longitud maxima
-        // en el campo txtPasswd
+        // en el campo txtPasswd.
         if (evt.equals(txtPasswd)) {
             if (txtPasswd.getText().length() >= max) {
                 event.consume();
             }
         }
         // Comprobacion y borrado de caracteres que superen a longitud maxima
-        // en el campo txtPassw2
+        // en el campo txtPassw2.
         if (evt.equals(txtPassw2)) {
             if (txtPassw2.getText().length() >= max) {
                 event.consume();
             }
         }
         // Comprobacion y borrado de caracteres que superen a longitud maxima
-        // en el campo txtEmail
+        // en el campo txtEmail.
         if (evt.equals(txtEmail)) {
             if (txtEmail.getText().length() >= max) {
                 event.consume();
@@ -181,7 +182,7 @@ public class SignUpController {
      */
     @FXML
     private void buttonEvent(ActionEvent event) {
-
+        LOGGER.info("Pulsacion de btnSignUp");
         try {
             LOGGER.info("Inicializacion de la variable user");
             User user = new User();
@@ -190,22 +191,28 @@ public class SignUpController {
             user.setEmail(txtEmail.getText());
             user.setPassword(txtPasswd.getText());
             LOGGER.info("Ejecucion del metodo signUp de la implementacion");
+            // Acceso al metodo de signUp de la implementacion a traves de la 
+            // llamada al metodo de la factoria para crear implementaciones.
             user = getUiImplem().signUp(user);
             LOGGER.info("Registro de usuario exitoso");
+            // Creacion de alert para aviso al cliente de que el registro se 
+            // ha podido hacer correctamente.
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario registrado correctamente");
 
             alert.showAndWait();
 
-            LOGGER.info("Carga del FXML de Session");
+            LOGGER.info("Carga de la ventana de LogOut");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/view/Session.fxml")
             );
-            // Se carga el FXML de Session
+            // Se carga el FXML de Session.
             Parent root = (Parent) loader.load();
             LOGGER.info("Llamada al controlador del FXML");
-            // Se recoge el controlador del FXML
+            // Se recoge el controlador del FXML.
             SessionController controller = ((SessionController) loader.getController());
             controller.setStage(stage);
+            // Se manda el usuario a traves de un metodo al controlador de 
+            // Session.
             controller.initData(user);
             controller.initStage(root);
 
@@ -225,20 +232,20 @@ public class SignUpController {
      * El metodo que indica las acciones del botón y crea la ventana a la que se
      * dirige. Se cargara el FXML de SignIn y se mostrara la ventana de SignIn.
      *
-     * @param event
+     * @param event Evento de pulsacion de boton
      */
     @FXML
     private void buttonEventBack(ActionEvent event) {
-
+        LOGGER.info("Pulsacion de btnAtras");
         try {
             LOGGER.info("Carga del FXML de SignIn");
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/view/SignIn.fxml")
             );
-            // Se carga el FXML de SignIn
+            // Se carga el FXML de SignIn.
             Parent root = (Parent) loader.load();
             LOGGER.info("Llamada al controlador del FXML");
-            // Se recoge el controlador del FXML
+            // Se recoge el controlador del FXML.
             SignInController controller = ((SignInController) loader.getController());
             controller.setStage(stage);
             LOGGER.info("Inicio del stage de SignIn");
@@ -262,15 +269,16 @@ public class SignUpController {
      */
     private void emailTextValidation(ObservableValue ov, String oldV,
             String newV) {
-        // Se comprueba si el textField tiene algun tipo de texto para poder hacer una validacion.
+        // Se comprueba si el campo txtEmail tiene algun tipo de texto para 
+        // poder hacer una validacion.
         if (!txtEmail.getText().equals("")) {
             try {
-                // Guarda el texto del textField en un string para llevarlo al metodo de validacion. 
+                // Guarda el texto de txtEmail en un string para llevarlo
+                // al metodo de validacion. 
                 String email = txtEmail.getText();
                 validarEmailPattern(email);
                 lblEmail.setVisible(false);
             } catch (EmailPatternException e) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblEmail.setVisible(true);
             }
         } else {
@@ -289,17 +297,18 @@ public class SignUpController {
      */
     private void passwdTextCaractValidation(ObservableValue ov, String oldV,
             String newV) {
-        // Se comprueba si el textField tiene algun tipo de texto para poder hacer una validacion.
+        // Se comprueba si el campo txtPasswd tiene algun tipo de texto para
+        // poder hacer una validacion.
         if (!txtPasswd.getText().equals("")) {
 
             try {
-                // Guarda el texto del textField en un string para llevarlo al metodo de validacion. 
+                // Guarda el texto de txtPasswd en un string para llevarlo
+                // al metodo de validacion. 
                 String passwd = txtPasswd.getText();
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
 
             } catch (PasswordLengthException e) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblCaract.setVisible(true);
             }
 
@@ -319,16 +328,17 @@ public class SignUpController {
      */
     private void passwdTextNumValidation(ObservableValue ov, String oldV,
             String newV) {
-        // Se comprueba si el textField tiene algun tipo de texto para poder hacer una validacion.
+        // Se comprueba si el campo txtPasswd tiene algun tipo de texto para
+        // poder hacer una validacion.
         if (!txtPasswd.getText().equals("")) {
             try {
-                // Guarda el texto del textField en un string para llevarlo al metodo de validacion. 
+                // Guarda el texto de txtPasswd en un string para llevarlo
+                // al metodo de validacion. 
                 String passwd = txtPasswd.getText();
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
 
             } catch (PasswordNumException e) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblNum.setVisible(true);
             }
         } else {
@@ -345,16 +355,15 @@ public class SignUpController {
      * @param newV valor nuevo
      */
     private void repeatpasswd(ObservableValue ov, String oldV, String newV) {
-        // Se comprueba si el textField tiene algun tipo de texto para poder
-        // hacer una validacion.
+        // Se comprueba si el campo txtPasswd tiene algun tipo de texto para 
+        // poder hacer una validacion.
         if (!txtPassw2.getText().equals("")) {
             try {
                 // Llamada al metodo para la comprobacion de si las contraseñas
-                // son iguales.
+                // introducidas en los campos txtPasswd y txtPassw2 son iguales.
                 validarEqualPasswd();
                 lblPasswd2.setVisible(false);
             } catch (SamePasswordException e) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, e.getMessage());
                 lblPasswd2.setVisible(true);
             }
         } else {
@@ -396,7 +405,7 @@ public class SignUpController {
      * @throws EmailPatternException
      */
     public void validarEmailPattern(String email) throws EmailPatternException {
-        // Patron para la comprobacion.
+        // Patron para la comprobacion de formato correcto en el campo txtEmail.
         String regex = "^(.+)@(.+)[.](.+)$";
         Pattern pattern = Pattern.compile(regex);
 
@@ -417,7 +426,7 @@ public class SignUpController {
      */
     public void validarMinCaractPasswdPattern(String passwd)
             throws PasswordLengthException {
-        // Patron para la comprobacion.
+        // Patron para la comprobacion de longitud en el campo txtPasswd.
         String regex = "^(.+){8,50}$";
 
         Pattern pattern = Pattern.compile(regex);
@@ -439,7 +448,7 @@ public class SignUpController {
      */
     public void validarNumPasswdPattern(String passwd)
             throws PasswordNumException {
-        // Patron para la comprobacion.
+        // Patron para la comprobacion de numeros en el campo txtPasswd.
         String regex = ".*\\d.*";
 
         Pattern pattern = Pattern.compile(regex);

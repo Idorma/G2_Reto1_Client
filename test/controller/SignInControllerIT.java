@@ -43,7 +43,7 @@ public class SignInControllerIT extends ApplicationTest {
     }
 
     /**
-     * método que comprobará si la ventana se inicializa con los campos vacíos.
+     * Método que comprobará si la ventana se inicializa con los campos vacíos.
      */
     @Test
     public void testA_CamposVacios() {
@@ -72,20 +72,21 @@ public class SignInControllerIT extends ApplicationTest {
      * Se comprueba si la contraseña tiene la longitud requerida y si contiene
      * tanto números como caracteres.
      */
-    @Ignore
+
     @Test
     public void testB_botonLogInDeshabilitado() {
-        //rellenamos solo el campo del user, comprobamos y borramos
+        // Rellenamos solo el campo del user, comprobamos y borramos
         clickOn("#textUser");
         write("pepe");
         verifyThat("#btnLogin", isDisabled());
         eraseText(4);
-        //rellenamos solo el campo password de forma correcta y lo comprobamos.
+        // Rellenamos solo el campo password de forma correcta y lo comprobamos.
         clickOn("#textPasswd");
         write("abcd*1234");
         verifyThat("#btnLogin", isDisabled());
         eraseText(9);
-        //Rellenamos el nombre de usuario y una contraseña con una longitud inferior a 8 caracteres.
+        // Rellenamos el nombre de usuario y una contraseña con una longitud
+        // inferior a 8 caracteres.
         clickOn("#textUser");
         write("rodolfo");
         clickOn("#textPasswd");
@@ -107,7 +108,8 @@ public class SignInControllerIT extends ApplicationTest {
      */
     @Test
     public void testC_btnLoginEnabled() {
-        //metemos un usuario y una contraseña correcta
+        // Introducimos un usuario y una contraseña que cumpla con 
+        // las restricciones.
         clickOn("#textUser");
         write("pepe");
         clickOn("#textPasswd");
@@ -121,7 +123,7 @@ public class SignInControllerIT extends ApplicationTest {
      */
     @Test
     public void testD_OpenSignUpWindow() {
-        //comprobamos que podemos entrar a la ventana de registarse
+        // Comprobamos que podemos entrar a la ventana de registarse
         clickOn("#linkSignIn");
         verifyThat("#paneSignUp", isVisible());
     }
@@ -146,7 +148,8 @@ public class SignInControllerIT extends ApplicationTest {
      */
     @Test
     public void testF_CorrectlogIn() {
-        //metemos un usuario y una contraseña correcta
+        // Introducimos un usuario y una contraseña existente en la 
+        // base de datos.
         String nombre = "alain";
         String password = "abcd*1234";
 
@@ -163,10 +166,10 @@ public class SignInControllerIT extends ApplicationTest {
      * Metodo el cual comprueba que al meter un usuario y contraseña correcta,
      * teniendo el servidor cerrado, salta una excepcion tipo ConnectException.
      */
-    @Ignore
+
     @Test
     public void testG_ConnectException() {
-        //metemos un usuario y una contraseña correcta
+        // Introducimos un usuario y una contraseña .
         String nombre = "alain";
         String password = "abcd*1234";
 
@@ -188,7 +191,7 @@ public class SignInControllerIT extends ApplicationTest {
      */
     @Test
     public void testH_SignInException() {
-        //metemos un usuario y una contraseña correcta
+        // Introducimos un usuario y una contraseña correcta.
         String nombre = "hola";
         String password = "abcd*1234";
 
@@ -210,7 +213,8 @@ public class SignInControllerIT extends ApplicationTest {
      */
     @Test
     public void testI_PasswordLengthException() {
-        //metemos un usuario y una contraseña con una longitud menor a 8 caracteres
+        // Introducimos un usuario y una contraseña con una longitud
+        // menor a 8 caracteres.
         String nombre = "hola";
         String password = "abcd*12";
 
@@ -229,7 +233,7 @@ public class SignInControllerIT extends ApplicationTest {
      */
     @Test
     public void testJ_PasswordNumException() {
-        //metemos un usuario y una contraseña que no contiene numeros
+        // Introducimos un usuario y una contraseña que no contiene numeros.
         String nombre = "hola";
         String password = "abcdefgh";
 
@@ -239,5 +243,53 @@ public class SignInControllerIT extends ApplicationTest {
         write(password);
         verifyThat("#btnLogin", isDisabled());
 
+    }
+
+    /**
+     * Metodo el cual comprueba la excepcion UpdateException. Al introducir un
+     * usuario y contraseña correcta con el servidor abierto, pero con algun
+     * tipo de error en la query del lado servidor, apareceria un alert
+     * indicando que no se ha podido registrar la conexion.
+     */
+  
+    @Test
+    public void testK_UpdateException() {
+        // Introducimos un usuario y una contraseña correcta.
+        String nombre = "alain";
+        String password = "abcd*1234";
+
+        clickOn("#textUser");
+        write(nombre);
+        clickOn("#textPasswd");
+        write(password);
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("Error al intentar registrar la conexión en la base de datos", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+    }
+
+    /**
+     * Metodo el cual comprueba la excepcion ServerFullException. Al introducir
+     * un usuario y contraseña correcta teniendo el servidor abierto pero sin
+     * espacio en el servidor, apareceria un alert indicando que el servidor
+     * esta lleno.
+     */
+   
+    @Test
+    public void testL_ServerFullException() {
+        // Introducimos un usuario y una contraseña correcta.
+        String nombre = "alain";
+        String password = "abcd*1234";
+
+        clickOn("#textUser");
+        write(nombre);
+        clickOn("#textPasswd");
+        write(password);
+        verifyThat("#btnLogin", isEnabled());
+        clickOn("#btnLogin");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("El servidor esta lleno, intente conectarse mas tarde", NodeMatchers.isVisible());
+        clickOn("Aceptar");
     }
 }

@@ -21,7 +21,7 @@ public class App extends Application {
     /**
      * El metodo que carga el FXML de la ventana de SignIn.
      *
-     * @param stage
+     * @param stage Stage de la ventana
      */
     @Override
     public void start(Stage stage) {

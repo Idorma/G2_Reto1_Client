@@ -48,7 +48,7 @@ public class SessionController {
     /**
      * El metodo que indica el stage.
      *
-     * @param stage1
+     * @param stage1 Stage recuperado de la ventana anterior
      */
     public void setStage(Stage stage1) {
         stage = stage1;
@@ -80,7 +80,7 @@ public class SessionController {
      * El metodo que instancia la ventana. Se añaden tanto el icono como el
      * titulo y los listener de los metodos.
      *
-     * @param root
+     * @param root Nodo para la creacion de la escena de la ventana
      */
     public void initStage(Parent root) {
         Stage anotherStage = new Stage();
@@ -98,7 +98,7 @@ public class SessionController {
      * El metodo que indica las acciones del botón y crea la ventana a la que se
      * dirige. Se cargara el FXML de SignIn y se mostrara la ventana de SignIn.
      *
-     * @param event
+     * @param event Evento de pulsacion boton de cierre de sesion
      * @throws IOException
      */
     @FXML
@@ -131,7 +131,7 @@ public class SessionController {
      * El metodo que indica la acción al botón y sale de la aplicación. Se hará
      * a traves de una llamada al metodo confirmClose.
      *
-     * @param event
+     * @param event Evento de pulsacion de boton de salir del programa
      */
     @FXML
     private void buttonEventExit(ActionEvent event) {
