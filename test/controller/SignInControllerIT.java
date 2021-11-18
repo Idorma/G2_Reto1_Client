@@ -165,11 +165,11 @@ public class SignInControllerIT extends ApplicationTest {
      * Metodo el cual comprueba que al meter un usuario y contraseña correcta,
      * teniendo el servidor cerrado, salta una excepcion tipo ConnectException.
      */
-    @Ignore
+    
     @Test
     public void testG_ConnectException() {
         //metemos un usuario y una contraseña correcta
-        String nombre = "pepe";
+        String nombre = "jonathan";
         String password = "abcd*1234";
 
         clickOn("#textUser");
@@ -178,7 +178,7 @@ public class SignInControllerIT extends ApplicationTest {
         write(password);
         verifyThat("#btnLogin", isEnabled());
         clickOn("#btnLogin");
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("Error al intentar abrir/cerrar la conexion al servidor, intentelo mas tarde", NodeMatchers.isVisible());
     }
 
     /**
@@ -187,10 +187,11 @@ public class SignInControllerIT extends ApplicationTest {
      * SignInException.
      */
 
+    @Ignore
     @Test
     public void testH_SignInException() {
         //metemos un usuario y una contraseña correcta
-        String nombre = "hola";
+        String nombre = "pepinero";
         String password = "abcd*1234";
 
         clickOn("#textUser");
@@ -199,6 +200,6 @@ public class SignInControllerIT extends ApplicationTest {
         write(password);
         verifyThat("#btnLogin", isEnabled());
         clickOn("#btnLogin");
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("Los parametros introducidos no corresponden a ningún cliente", NodeMatchers.isVisible());
     }
 }
