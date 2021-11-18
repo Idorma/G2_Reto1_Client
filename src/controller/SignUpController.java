@@ -237,7 +237,9 @@ public class SignUpController {
                 String email = txtEmail.getText();
                 validarEmailPattern(email);
                 lblEmail.setVisible(false);
+                txtEmail.setStyle("-fx-control-inner-background:white");
             } catch (EmailPatternException e) {
+             txtEmail.setStyle("-fx-control-inner-background:red");
                 lblEmail.setVisible(true);
             }
         } else {
@@ -261,7 +263,9 @@ public class SignUpController {
                 String passwd = txtPasswd.getText();
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
+                txtPasswd.setStyle("-fx-control-inner-background:white");
             } catch (PasswordLengthException e) {
+                txtPasswd.setStyle("-fx-control-inner-background:red");
                 lblCaract.setVisible(true);
             }
 
@@ -287,6 +291,7 @@ public class SignUpController {
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
             } catch (PasswordNumException e) {
+                txtPasswd.setStyle("-fx-control-inner-background:red");
                 lblNum.setVisible(true);
             }
         }else{
@@ -308,7 +313,9 @@ public class SignUpController {
                 String passwd = txtPassw2.getText();
                 validarEqualPasswd();
                 lblPasswd2.setVisible(false);
+                txtPassw2.setStyle("-fx-control-inner-background:white");
             } catch (SamePasswordException e) {
+                txtPassw2.setStyle("-fx-control-inner-background:red");
                 lblPasswd2.setVisible(true);
             }
         }else{
