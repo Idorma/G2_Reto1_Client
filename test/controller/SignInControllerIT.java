@@ -177,7 +177,7 @@ public class SignInControllerIT extends ApplicationTest {
         write(password);
         verifyThat("#btnLogin", isEnabled());
         clickOn("#btnLogin");
-        verifyThat("Error al intentar abrir/cerrar la conexion al servidor, intentelo mas tarde", NodeMatchers.isVisible());
+        verifyThat("Error al intentar conectarse al servidor, intentelo mas tarde", NodeMatchers.isVisible());
     }
 
     /**
