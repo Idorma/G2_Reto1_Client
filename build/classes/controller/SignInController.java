@@ -54,10 +54,9 @@ public class SignInController {
 
     @FXML
     private Label lblNum;
-    
+
     @FXML
     private Pane paneVentana;
-    
 
     private final int max = 50;
 
@@ -200,11 +199,14 @@ public class SignInController {
                 String passwd = textPasswd.getText();
                 validarMinCaractPasswdPattern(passwd);
                 lblCaract.setVisible(false);
+                passwdErrors();
             } catch (PasswordLengthException e) {
                 lblCaract.setVisible(true);
+                passwdErrors();
             }
         } else {
             lblCaract.setVisible(false);
+            passwdErrors();
         }
 
     }
@@ -223,13 +225,31 @@ public class SignInController {
                 String passwd = textPasswd.getText();
                 validarNumPasswdPattern(passwd);
                 lblNum.setVisible(false);
+                passwdErrors();
             } catch (PasswordNumException e) {
                 lblNum.setVisible(true);
+                passwdErrors();
             }
         } else {
             lblNum.setVisible(false);
+            passwdErrors();
         }
 
+    }
+
+    /**
+     * metodo que pone las letras en rojo cuando existe algun tipo de error en 
+     * el campo de la password
+     */
+    private void passwdErrors() {
+        if (lblCaract.isVisible() || lblNum.isVisible()) {
+            //textPasswd.getStyleClass().add("error");
+            textPasswd.setStyle("-fx-background-color: red;");
+        } else {
+            //textPasswd.getStyleClass().add("normalText");
+            textPasswd.setStyle("-fx-background-color: white;");
+            
+        }
     }
 
     /**
