@@ -8,14 +8,17 @@ import application.App;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
+import org.testfx.matcher.control.LabeledMatchers;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
 /**

@@ -16,11 +16,11 @@
       
       <Label fx:id="lblPasswd" layoutX="264.0" layoutY="170.0" prefHeight="27.0" prefWidth="167.0" styleClass="lbl" stylesheets="@fxml.css" text="Contraseña" />
       
+      <PasswordField fx:id="textPasswd" focusTraversable="false" layoutX="264.0" layoutY="210.0" prefHeight="25.0" prefWidth="207.0" promptText="Min 8 caract. y números." />
+      
       <TextField fx:id="textUser" layoutX="264.0" layoutY="131.0" prefHeight="25.0" prefWidth="207.0" />
-
-      <PasswordField fx:id="textPasswd" layoutX="264.0" layoutY="210.0" prefHeight="25.0" prefWidth="207.0" promptText="Min 8 caract. y números." /> 
-            
-      <Button fx:id="btnLogin" defaultButton="true" disable="true" layoutX="313.0" layoutY="265.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" styleClass="btn" stylesheets="@fxml.css" text="Iniciar sesión" />
+      
+      <Button fx:id="btnLogin" defaultButton="true" disable="true" focusTraversable="false" layoutX="313.0" layoutY="265.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" styleClass="btn" stylesheets="@fxml.css" text="Iniciar sesión" />
       
       <Hyperlink fx:id="linkSignIn" layoutX="409.0" layoutY="303.0" prefHeight="23.0" prefWidth="87.0" text="Registrarse" />
       
