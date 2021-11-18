@@ -244,11 +244,10 @@ public class SignInController {
     private void passwdErrors() {
         if (lblCaract.isVisible() || lblNum.isVisible()) {
             //textPasswd.getStyleClass().add("error");
-            textPasswd.setStyle("-fx-background-color: red;");
+            textPasswd.setStyle("-fx-border-color: red;");
         } else {
             //textPasswd.getStyleClass().add("normalText");
-            textPasswd.setStyle("-fx-background-color: white;");
-            
+            textPasswd.setStyle("-fx-border-color: light grey;");
         }
     }
 

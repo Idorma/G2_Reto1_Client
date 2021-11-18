@@ -43,7 +43,7 @@ public class SignInControllerIT extends ApplicationTest {
     /**
      * método que comprobará si la ventana se inicializa con los campos vacíos.
      */
-    @Ignore
+    
     @Test
     public void testA_CamposVacios() {
 
@@ -165,7 +165,6 @@ public class SignInControllerIT extends ApplicationTest {
      * Metodo el cual comprueba que al meter un usuario y contraseña correcta,
      * teniendo el servidor cerrado, salta una excepcion tipo ConnectException.
      */
-    
     @Test
     public void testG_ConnectException() {
         //metemos un usuario y una contraseña correcta
@@ -186,12 +185,11 @@ public class SignInControllerIT extends ApplicationTest {
      * incorrecta, y el servidor esta abierto, salta una excepcion tipo
      * SignInException.
      */
-
     @Ignore
     @Test
     public void testH_SignInException() {
-        //metemos un usuario y una contraseña correcta
-        String nombre = "pepinero";
+        //metemos un usuario y una contraseña incorrecta
+        String nombre = "hola";
         String password = "abcd*1234";
 
         clickOn("#textUser");
@@ -200,6 +198,7 @@ public class SignInControllerIT extends ApplicationTest {
         write(password);
         verifyThat("#btnLogin", isEnabled());
         clickOn("#btnLogin");
+        //comprobamos que es la alerta adecuada para este tipo de excepcion
         verifyThat("Los parametros introducidos no corresponden a ningún cliente", NodeMatchers.isVisible());
     }
 }
